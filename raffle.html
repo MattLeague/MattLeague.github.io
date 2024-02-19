@@ -60,6 +60,10 @@
             font-weight: bold;
             font-size: 20px;
         }
+
+        .participant-list {
+            margin-bottom: 20px;
+        }
     </style>
 </head>
 <body>
@@ -68,6 +72,7 @@
     </header>
     <section>
         <h2>Participant Names</h2>
+        <div class="participant-list" id="participantList"></div>
         <div class="container">
             <button onclick="startRaffle()">Start Raffle</button>
         </div>
@@ -83,6 +88,8 @@
                 var range = response.result;
                 if (range.values.length > 1) {
                     const participantNames = range.values.slice(1).flat();
+                    const participantListDiv = document.getElementById('participantList');
+                    participantListDiv.innerHTML = '<h3>Participant List</h3><ul>' + participantNames.map(name => `<li>${name}</li>`).join('') + '</ul>';
                     const resultDiv = document.getElementById('result');
                     resultDiv.textContent = 'Spinning...';
                     const spinInterval = setInterval(() => {
