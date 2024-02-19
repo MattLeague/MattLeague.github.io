@@ -41,22 +41,6 @@
             margin: 0 auto;
         }
 
-        label {
-            display: block;
-            margin-bottom: 10px;
-        }
-
-        textarea {
-            padding: 8px;
-            border-radius: 5px;
-            border: 1px solid #ccc;
-            width: 100%;
-            box-sizing: border-box;
-            margin-bottom: 10px;
-            resize: vertical;
-            min-height: 100px;
-        }
-
         button {
             padding: 10px 20px;
             background-color: #4CAF50;
@@ -85,8 +69,6 @@
     <section>
         <h2>Participant Names</h2>
         <div class="container">
-            <label for="participantNames">Enter participant names (one per line):</label>
-            <textarea id="participantNames" placeholder="Enter participant names"></textarea>
             <button onclick="startRaffle()">Start Raffle</button>
         </div>
         <div class="result" id="result"></div>
@@ -94,24 +76,46 @@
 
     <script>
         function startRaffle() {
-            const participantNamesInput = document.getElementById('participantNames').value;
-            const participantNames = participantNamesInput.split('\n').map(name => name.trim());
-            if (participantNames.length > 1) {
-                const resultDiv = document.getElementById('result');
-                resultDiv.textContent = 'Spinning...';
-                const spinInterval = setInterval(() => {
-                    const randomIndex = Math.floor(Math.random() * participantNames.length);
-                    resultDiv.textContent = participantNames[randomIndex];
-                }, 100);
-                setTimeout(() => {
-                    clearInterval(spinInterval);
-                    const winnerIndex = Math.floor(Math.random() * participantNames.length);
-                    resultDiv.textContent = `Winner: ${participantNames[winnerIndex]}`;
-                }, 2000); // Change 2000 to the desired duration of spinning (in milliseconds)
-            } else {
-                alert('Please enter at least two participant names.');
-            }
+            gapi.client.sheets.spreadsheets.values.get({
+                spreadsheetId: '14qoX-DzseqP99W7qf45_4ftG4hMkolYnmAwLQkVw9a8',
+                range: 'Raffle Entries!B:B',
+            }).then(function(response) {
+                var range = response.result;
+                if (range.values.length > 1) {
+                    const participantNames = range.values.slice(1).flat();
+                    const resultDiv = document.getElementById('result');
+                    resultDiv.textContent = 'Spinning...';
+                    const spinInterval = setInterval(() => {
+                        const randomIndex = Math.floor(Math.random() * participantNames.length);
+                        resultDiv.textContent = participantNames[randomIndex];
+                    }, 100);
+                    setTimeout(() => {
+                        clearInterval(spinInterval);
+                        const winnerIndex = Math.floor(Math.random() * participantNames.length);
+                        resultDiv.textContent = `Winner: ${participantNames[winnerIndex]}`;
+                    }, 2000); // Change 2000 to the desired duration of spinning (in milliseconds)
+                } else {
+                    alert('No participant names found.');
+                }
+            }, function(response) {
+                alert('Error: ' + response.result.error.message);
+            });
         }
+    </script>
+
+    <script src="https://apis.google.com/js/api.js"></script>
+    <script>
+        function initClient() {
+            gapi.client.init({
+                apiKey: 'AIzaSyDoTlAUAZJ_oNr-lwKVB0YgfPVGRseySYA',
+                discoveryDocs: ["https://sheets.googleapis.com/$discovery/rest?version=v4"],
+            }).then(function () {
+                console.log('Google Sheets API initialized');
+            }, function(error) {
+                console.error('Error initializing Google Sheets API: ' + error.details);
+            });
+        }
+        gapi.load('client', initClient);
     </script>
 </body>
 </html>
