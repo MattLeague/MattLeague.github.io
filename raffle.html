@@ -8,21 +8,56 @@
         body {
             font-family: Arial, sans-serif;
             margin: 0;
+            padding: 0;
+            background-color: #f5f5f5;
+            color: #333;
+        }
+
+        header {
+            background-color: #333;
+            color: #fff;
             padding: 20px;
-        }
-
-        .container {
-            max-width: 600px;
-            margin: 0 auto;
-        }
-
-        h1, h2 {
             text-align: center;
         }
 
-        button {
-            display: block;
+        section {
+            padding: 20px;
+            margin: 20px 0;
+            background-color: #fff;
+            border-radius: 5px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            max-width: 600px;
             margin: 20px auto;
+        }
+
+        h2 {
+            color: #555;
+            text-align: center;
+            margin-bottom: 20px;
+        }
+
+        .container {
+            max-width: 400px;
+            margin: 0 auto;
+        }
+
+        label {
+            display: block;
+            margin-bottom: 10px;
+        }
+
+        textarea {
+            padding: 8px;
+            border-radius: 5px;
+            border: 1px solid #ccc;
+            width: 100%;
+            box-sizing: border-box;
+            margin-bottom: 10px;
+            resize: vertical;
+            min-height: 100px;
+        }
+
+        button {
             padding: 10px 20px;
             background-color: #4CAF50;
             color: #fff;
@@ -35,53 +70,47 @@
             background-color: #45a049;
         }
 
-        ul {
-            list-style-type: none;
-            padding: 0;
-        }
-
-        li {
-            padding: 10px;
-            margin-bottom: 5px;
-            background-color: #f9f9f9;
-            border-radius: 5px;
-        }
-
-        .winner {
-            color: #4CAF50;
+        .result {
+            text-align: center;
+            margin-top: 20px;
             font-weight: bold;
+            font-size: 20px;
         }
     </style>
 </head>
 <body>
-    <div class="container">
+    <header>
         <h1>Raffle System</h1>
-        <button onclick="startRaffle()">Start Raffle</button>
-        <ul id="participants">
-            <!-- Participants will be displayed here -->
-        </ul>
-        <h2 id="winner"></h2>
-    </div>
+    </header>
+    <section>
+        <h2>Participant Names</h2>
+        <div class="container">
+            <label for="participantNames">Enter participant names (one per line):</label>
+            <textarea id="participantNames" placeholder="Enter participant names"></textarea>
+            <button onclick="startRaffle()">Start Raffle</button>
+        </div>
+        <div class="result" id="result"></div>
+    </section>
 
     <script>
-        const participants = ["Participant 1", "Participant 2", "Participant 3", "Participant 4", "Participant 5"]; // Add your list of names here
-        let winner = '';
-
         function startRaffle() {
-            const participantList = document.getElementById('participants');
-            participantList.innerHTML = '';
-
-            participants.forEach(participant => {
-                const listItem = document.createElement('li');
-                listItem.textContent = participant;
-                participantList.appendChild(listItem);
-            });
-
-            const randomNumber = Math.floor(Math.random() * participants.length);
-            winner = participants[randomNumber];
-
-            const winnerAnnouncement = document.getElementById('winner');
-            winnerAnnouncement.textContent = `The winner is: ${winner}`;
+            const participantNamesInput = document.getElementById('participantNames').value;
+            const participantNames = participantNamesInput.split('\n').map(name => name.trim());
+            if (participantNames.length > 1) {
+                const resultDiv = document.getElementById('result');
+                resultDiv.textContent = 'Spinning...';
+                const spinInterval = setInterval(() => {
+                    const randomIndex = Math.floor(Math.random() * participantNames.length);
+                    resultDiv.textContent = participantNames[randomIndex];
+                }, 100);
+                setTimeout(() => {
+                    clearInterval(spinInterval);
+                    const winnerIndex = Math.floor(Math.random() * participantNames.length);
+                    resultDiv.textContent = `Winner: ${participantNames[winnerIndex]}`;
+                }, 2000); // Change 2000 to the desired duration of spinning (in milliseconds)
+            } else {
+                alert('Please enter at least two participant names.');
+            }
         }
     </script>
 </body>
