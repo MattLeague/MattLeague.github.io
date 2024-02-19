@@ -70,6 +70,19 @@
         button:hover {
             background-color: #45a049;
         }
+
+        form {
+            text-align: center;
+        }
+
+        input[type="text"] {
+            padding: 8px;
+            border-radius: 5px;
+            border: 1px solid #ccc;
+            width: 60%;
+            box-sizing: border-box;
+            margin-bottom: 10px;
+        }
     </style>
 </head>
 <body>
@@ -91,7 +104,10 @@
         <div class="container">
             <h2>Raffles</h2>
             <p>Participate in our exciting raffles for a chance to win big!</p>
-            <button>Join Raffle</button>
+            <form>
+                <input type="text" placeholder="Enter your raffle code">
+                <button>Join Raffle</button>
+            </form>
         </div>
     </section>
 </body>
