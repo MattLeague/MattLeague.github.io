@@ -86,23 +86,27 @@
                 range: 'Raffle Entries!B:B',
             }).then(function(response) {
                 var range = response.result;
-                if (range.values.length > 1) {
-                    const participantNames = range.values.slice(1).flat();
+                if (range.values && range.values.length > 0) {
+                    const participantNames = range.values.flat().filter(Boolean);
                     const participantListDiv = document.getElementById('participantList');
-                    participantListDiv.innerHTML = '<h3>Participant List</h3><ul>' + participantNames.map(name => `<li>${name}</li>`).join('') + '</ul>';
-                    const resultDiv = document.getElementById('result');
-                    resultDiv.textContent = 'Spinning...';
-                    const spinInterval = setInterval(() => {
-                        const randomIndex = Math.floor(Math.random() * participantNames.length);
-                        resultDiv.textContent = participantNames[randomIndex];
-                    }, 100);
-                    setTimeout(() => {
-                        clearInterval(spinInterval);
-                        const winnerIndex = Math.floor(Math.random() * participantNames.length);
-                        resultDiv.textContent = `Winner: ${participantNames[winnerIndex]}`;
-                    }, 2000); // Change 2000 to the desired duration of spinning (in milliseconds)
+                    if (participantNames.length > 0) {
+                        participantListDiv.innerHTML = '<h3>Participant List</h3><ul>' + participantNames.map(name => `<li>${name}</li>`).join('') + '</ul>';
+                        const resultDiv = document.getElementById('result');
+                        resultDiv.textContent = 'Spinning...';
+                        const spinInterval = setInterval(() => {
+                            const randomIndex = Math.floor(Math.random() * participantNames.length);
+                            resultDiv.textContent = participantNames[randomIndex];
+                        }, 100);
+                        setTimeout(() => {
+                            clearInterval(spinInterval);
+                            const winnerIndex = Math.floor(Math.random() * participantNames.length);
+                            resultDiv.textContent = `Winner: ${participantNames[winnerIndex]}`;
+                        }, 2000); // Change 2000 to the desired duration of spinning (in milliseconds)
+                    } else {
+                        alert('No participant names found.');
+                    }
                 } else {
-                    alert('No participant names found.');
+                    alert('No data found in the specified range.');
                 }
             }, function(response) {
                 alert('Error: ' + response.result.error.message);
