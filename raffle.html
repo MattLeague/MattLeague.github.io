@@ -83,7 +83,7 @@
         function startRaffle() {
             gapi.client.sheets.spreadsheets.values.get({
                 spreadsheetId: '14qoX-DzseqP99W7qf45_4ftG4hMkolYnmAwLQkVw9a8',
-                range: 'Raffle Entries!B:B',
+                range: 'Rabbit Raffle!B:B',
             }).then(function(response) {
                 var range = response.result;
                 if (range.values.length > 1) {
