@@ -117,14 +117,22 @@
                 <h2>Select Raffle Winner</h2>
                 <div id="participantList"></div>
                 <button onclick="startRaffle()">Start Raffle</button>
+                <div class="result" id="result"></div>
             </div>
         </div>
-        <div class="result" id="result"></div>
     </section>
 
     <script>
         function openRafflePopup() {
             document.getElementById('raffleModal').style.display = 'block';
+            const participantList = document.getElementById('participantList');
+            participantList.textContent = '';
+            const participants = document.getElementById('participantNames').value.split('\n').filter(Boolean);
+            participants.forEach(participant => {
+                const participantItem = document.createElement('div');
+                participantItem.textContent = participant;
+                participantList.appendChild(participantItem);
+            });
         }
 
         function closeRafflePopup() {
@@ -133,18 +141,22 @@
 
         function startRaffle() {
             const participantList = document.getElementById('participantList');
-            const participantNames = participantList.textContent.trim().split('\n').filter(Boolean);
-            const resultDiv = document.getElementById('result');
-            resultDiv.textContent = 'Spinning...';
-            const spinInterval = setInterval(() => {
-                const randomIndex = Math.floor(Math.random() * participantNames.length);
-                resultDiv.textContent = participantNames[randomIndex];
-            }, 100);
-            setTimeout(() => {
-                clearInterval(spinInterval);
-                const winnerIndex = Math.floor(Math.random() * participantNames.length);
-                resultDiv.textContent = `Winner: ${participantNames[winnerIndex]}`;
-            }, 2000); // Change 2000 to the desired duration of spinning (in milliseconds)
+            const participantItems = participantList.children;
+            if (participantItems.length > 0) {
+                const resultDiv = document.getElementById('result');
+                resultDiv.textContent = 'Spinning...';
+                const spinInterval = setInterval(() => {
+                    const randomIndex = Math.floor(Math.random() * participantItems.length);
+                    resultDiv.textContent = participantItems[randomIndex].textContent;
+                }, 100);
+                setTimeout(() => {
+                    clearInterval(spinInterval);
+                    const winnerIndex = Math.floor(Math.random() * participantItems.length);
+                    resultDiv.textContent = `Winner: ${participantItems[winnerIndex].textContent}`;
+                }, 2000); // Change 2000 to the desired duration of spinning (in milliseconds)
+            } else {
+                alert('Please enter participant names.');
+            }
         }
     </script>
 
