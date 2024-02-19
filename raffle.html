@@ -61,50 +61,92 @@
             font-size: 20px;
         }
 
-        .participant-input {
-            width: 100%;
-            height: 200px;
-            margin-bottom: 10px;
-            padding: 5px;
-            border: 1px solid #ccc;
-            border-radius: 5px;
-            resize: none;
+        .participant-list {
+            margin-bottom: 20px;
         }
+
+        .modal {
+            display: none;
+            position: fixed;
+            z-index: 1;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            overflow: auto;
+            background-color: rgba(0, 0, 0, 0.5);
+        }
+
+        .modal-content {
+            background-color: #fefefe;
+            margin: 15% auto;
+            padding: 20px;
+            border: 1px solid #888;
+            width: 80%;
+            border-radius: 5px;
+        }
+
+        .close {
+            color: #aaa;
+            float: right;
+            font-size: 28px;
+            font-weight: bold;
+        }
+
+        .close:hover,
+        .close:focus {
+            color: black;
+            text-decoration: none;
+            cursor: pointer;
+        }
+
     </style>
 </head>
 <body>
     <header>
-        <h1>BlondeRabbit Raffle System</h1>
+        <h1>Raffle System</h1>
     </header>
     <section>
         <h2>Participant Names</h2>
-        <textarea class="participant-input" id="participantInput" placeholder="Enter participant names (one per line)"></textarea>
         <div class="container">
-            <button onclick="startRaffle()">Select a winner!</button>
+            <button onclick="openRafflePopup()">Select Raffle Winner</button>
+        </div>
+        <div class="modal" id="raffleModal">
+            <div class="modal-content">
+                <span class="close" onclick="closeRafflePopup()">&times;</span>
+                <h2>Select Raffle Winner</h2>
+                <div id="participantList"></div>
+                <button onclick="startRaffle()">Start Raffle</button>
+            </div>
         </div>
         <div class="result" id="result"></div>
     </section>
 
     <script>
+        function openRafflePopup() {
+            document.getElementById('raffleModal').style.display = 'block';
+        }
+
+        function closeRafflePopup() {
+            document.getElementById('raffleModal').style.display = 'none';
+        }
+
         function startRaffle() {
-            const participantInput = document.getElementById('participantInput').value;
-            const participantNames = participantInput.split('\n').filter(Boolean);
-            if (participantNames.length > 0) {
-                const resultDiv = document.getElementById('result');
-                resultDiv.textContent = 'Spinning...';
-                const spinInterval = setInterval(() => {
-                    const randomIndex = Math.floor(Math.random() * participantNames.length);
-                    resultDiv.textContent = participantNames[randomIndex];
-                }, 100);
-                setTimeout(() => {
-                    clearInterval(spinInterval);
-                    const winnerIndex = Math.floor(Math.random() * participantNames.length);
-                    resultDiv.textContent = `Winner: ${participantNames[winnerIndex]}`;
-                }, 5000); // Change 2000 to the desired duration of spinning (in milliseconds)
-            } else {
-                alert('Please enter participant names.');
-            }
+            const participantList = document.getElementById('participantList');
+            const participantNames = participantList.textContent.trim().split('\n').filter(Boolean);
+            const resultDiv = document.getElementById('result');
+            resultDiv.textContent = 'Spinning...';
+            const spinInterval = setInterval(() => {
+                const randomIndex = Math.floor(Math.random() * participantNames.length);
+                resultDiv.textContent = participantNames[randomIndex];
+            }, 100);
+            setTimeout(() => {
+                clearInterval(spinInterval);
+                const winnerIndex = Math.floor(Math.random() * participantNames.length);
+                resultDiv.textContent = `Winner: ${participantNames[winnerIndex]}`;
+            }, 2000); // Change 2000 to the desired duration of spinning (in milliseconds)
         }
     </script>
+
 </body>
 </html>
