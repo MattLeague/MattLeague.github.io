@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Casino Streamer</title>
+    <title>Bonus Hunt Information</title>
     <style>
         body {
             font-family: Arial, sans-serif;
@@ -20,31 +20,14 @@
             text-align: center;
         }
 
-        nav {
-            background-color: #444;
-            padding: 10px;
-            text-align: center;
-        }
-
-        nav a {
-            color: #fff;
-            text-decoration: none;
-            padding: 10px 20px;
-            margin: 0 5px;
-            border-radius: 5px;
-            background-color: #555;
-        }
-
-        nav a:hover {
-            background-color: #777;
-        }
-
         section {
             padding: 20px;
             margin: 20px 0;
             background-color: #fff;
             border-radius: 5px;
             box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            max-width: 600px;
+            margin: 20px auto;
         }
 
         h2 {
@@ -54,8 +37,23 @@
         }
 
         .container {
-            max-width: 800px;
+            max-width: 400px;
             margin: 0 auto;
+        }
+
+        label {
+            display: block;
+            margin-bottom: 10px;
+        }
+
+        input[type="text"],
+        input[type="number"] {
+            padding: 8px;
+            border-radius: 5px;
+            border: 1px solid #ccc;
+            width: 100%;
+            box-sizing: border-box;
+            margin-bottom: 10px;
         }
 
         button {
@@ -70,45 +68,41 @@
         button:hover {
             background-color: #45a049;
         }
-
-        form {
-            text-align: center;
-        }
-
-        input[type="text"] {
-            padding: 8px;
-            border-radius: 5px;
-            border: 1px solid #ccc;
-            width: 60%;
-            box-sizing: border-box;
-            margin-bottom: 10px;
-        }
     </style>
 </head>
 <body>
     <header>
-        <h1>Welcome to Casino Streamer's Website</h1>
+        <h1>Bonus Hunt Information</h1>
     </header>
-    <nav>
-        <a href="#bonus-hunts">Bonus Hunts</a>
-        <a href="#raffles">Raffles</a>
-    </nav>
-    <section id="bonus-hunts">
+    <section>
+        <h2>Add Bonus Hunt Information</h2>
         <div class="container">
-            <h2>Bonus Hunts</h2>
-            <p>Stay tuned for our latest bonus hunts!</p>
-            <button>Join Bonus Hunt</button>
+            <label for="slotName">Slot Name:</label>
+            <input type="text" id="slotName" placeholder="Enter slot name">
+
+            <label for="betAmount">Bet Amount:</label>
+            <input type="number" id="betAmount" placeholder="Enter bet amount">
+
+            <button onclick="addBonusHunt()">Add Bonus Hunt</button>
         </div>
     </section>
-    <section id="raffles">
-        <div class="container">
-            <h2>Raffles</h2>
-            <p>Participate in our exciting raffles for a chance to win big!</p>
-            <form>
-                <input type="text" placeholder="Enter your raffle code">
-                <button>Join Raffle</button>
-            </form>
-        </div>
-    </section>
+
+    <script>
+        // Array to store bonus hunt information
+        const bonusHunts = [];
+
+        // Function to add bonus hunt information
+        function addBonusHunt() {
+            const slotName = document.getElementById('slotName').value;
+            const betAmount = document.getElementById('betAmount').value;
+            if (slotName.trim() !== '' && betAmount.trim() !== '') {
+                bonusHunts.push({ slotName: slotName, betAmount: betAmount });
+                alert('Bonus Hunt information added successfully!');
+            } else {
+                alert('Please enter both slot name and bet amount.');
+            }
+        }
+    </script>
+    <a href="bonus_hunt_list.html"><button>Export Bonus Hunt List</button></a>
 </body>
 </html>
