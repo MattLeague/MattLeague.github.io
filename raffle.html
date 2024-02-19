@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Raffle System</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 20px;
+        }
+
+        .container {
+            max-width: 600px;
+            margin: 0 auto;
+        }
+
+        h1, h2 {
+            text-align: center;
+        }
+
+        button {
+            display: block;
+            margin: 20px auto;
+            padding: 10px 20px;
+            background-color: #4CAF50;
+            color: #fff;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+
+        button:hover {
+            background-color: #45a049;
+        }
+
+        ul {
+            list-style-type: none;
+            padding: 0;
+        }
+
+        li {
+            padding: 10px;
+            margin-bottom: 5px;
+            background-color: #f9f9f9;
+            border-radius: 5px;
+        }
+
+        .winner {
+            color: #4CAF50;
+            font-weight: bold;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Raffle System</h1>
+        <button onclick="startRaffle()">Start Raffle</button>
+        <ul id="participants">
+            <!-- Participants will be displayed here -->
+        </ul>
+        <h2 id="winner"></h2>
+    </div>
+
+    <script>
+        const participants = ["Participant 1", "Participant 2", "Participant 3", "Participant 4", "Participant 5"]; // Add your list of names here
+        let winner = '';
+
+        function startRaffle() {
+            const participantList = document.getElementById('participants');
+            participantList.innerHTML = '';
+
+            participants.forEach(participant => {
+                const listItem = document.createElement('li');
+                listItem.textContent = participant;
+                participantList.appendChild(listItem);
+            });
+
+            const randomNumber = Math.floor(Math.random() * participants.length);
+            winner = participants[randomNumber];
+
+            const winnerAnnouncement = document.getElementById('winner');
+            winnerAnnouncement.textContent = `The winner is: ${winner}`;
+        }
+    </script>
+</body>
+</html>
